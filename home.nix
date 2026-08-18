@@ -11,7 +11,6 @@
     treemd
     glow
     uv
-    go
     unstable.gwq
     unstable.codex
   ];
@@ -20,10 +19,6 @@
     UV_SYSTEM_CERTS = "true";
     SUDO_EDITOR = "hx";
   };
-  home.sessionPath = [
-    "$HOME/go/bin"
-  ];
-
   programs.bash = {
     enable = true;
     initExtra = ''
@@ -65,6 +60,7 @@
   imports = [
     ./programs/eza.nix
     ./programs/git.nix
+    ./programs/go.nix
     ./programs/helix.nix
     ./programs/lazygit.nix
     ./programs/lazysql.nix
