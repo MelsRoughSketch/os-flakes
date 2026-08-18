@@ -66,6 +66,7 @@
     ./programs/lazygit.nix
     ./programs/lazysql.nix
     ./programs/rust.nix
+    ./programs/utilities.nix
     ./programs/yazi.nix
   ];
 
