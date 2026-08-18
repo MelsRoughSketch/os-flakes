@@ -39,6 +39,7 @@
       gl = "glow -p";
       cw = "gwq cd";
       lq = "lazysql";
+      nrs = "sudo nixos-rebuild switch --flake path:/etc/nixos#wsl";
     };
   };
 

@@ -5,6 +5,7 @@
 
       settings = {
         user = {
+          # plz override
           name = "MelsRoughSketch";
           email = "106862952+MelsRoughSketch@users.noreply.github.com";
         };
