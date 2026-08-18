@@ -1,27 +1,74 @@
-
-{ config, pkgs, ... }:
+{ pkgs, username, ... }:
 
 {
-  home.username = "nixos";
-  home.homeDirectory = "/home/nixos";
-
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
   home.packages = with pkgs; [
     ripgrep
     fd
     jq
     bat
+    eza
+    treemd
+    glow
+    uv
+    go
+    unstable.gwq
+    unstable.codex
   ];
 
-  programs.git = {
+  home.sessionVariables = {
+    UV_SYSTEM_CERTS = "true";
+    SUDO_EDITOR = "hx";
+  };
+  home.sessionPath = [
+    "$HOME/go/bin"
+  ];
+
+  programs.bash = {
     enable = true;
-    settings = {
-      
-      user = {
-        name = "MelsRoughSketch";
-        email = "106862952+MelsRoughSketch@users.noreply.github.com";
-      };
+    initExtra = ''
+      function y() {
+        local tmp="$(mktemp -t "yazi-cwd.XXXXX")"
+        command yazi "$@" --cwd-file="$tmp"
+        if cwd="$(<"$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+          builtin cd -- "$cwd"
+        fi
+        rm -f -- "$tmp"
+      }
+    '';
+
+    shellAliases = {
+      l = "eza --icons -F -l";
+      lg = "lazygit";
+      gl = "glow -p";
+      cw = "gwq cd";
+      lq = "lazysql";
     };
   };
+
+  programs.zoxide = {
+    enable = true;
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+
+  programs.oh-my-posh = {
+    enable = true;
+    enableBashIntegration = true;
+    useTheme = "kushal";
+  };
+
+  imports = [
+    ./programs/git.nix
+    ./programs/helix.nix
+    ./programs/lazygit.nix
+    ./programs/lazysql.nix
+    ./programs/yazi.nix
+  ];
 
   home.stateVersion = "26.05";
 }

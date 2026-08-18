@@ -5,11 +5,11 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{ config, lib, pkgs, ... }:
+{ inputs, pkgs, username, ... }:
 
 {
   wsl.enable = true;
-  wsl.defaultUser = "nixos";
+  wsl.defaultUser = username;
   nix.settings = {
     experimental-features = [
       "nix-command"
@@ -20,48 +20,53 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  users.users.nixos = {
+  users.users.${username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    helix
-    lazygit
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      git
+      vim
+    ];
+    sessionVariables = {
+      COLORTERM = "truecolor";
+    };
+  };
 
   programs.bash.interactiveShellInit = ''
-    nixos-update() {
-    (
-      set -e
-      cd /etc/nixos
+      nixos-update() {
+      (
+        set -e
+        cd /etc/nixos
 
-      case "''${1:-all}" in
-        all)
-          nix flake update
-          ;;
-        stable)
-          nix flake update nixpkgs home-manager
-          ;;
-        unstable)
-          nix flake update nixpkgs-unstable
-          ;;
-        *)
-          echo "Usage: nixos-update [all|stable|unstable]" >&2
-          exit 2
-          ;;
-      esac
+        case "''${1:-all}" in
+          all)
+            nix flake update
+            ;;
+          stable)
+            nix flake update nixpkgs home-manager
+            ;;
+          unstable)
+            nix flake update nixpkgs-unstable
+            ;;
+          *)
+            echo "Usage: nixos-update [all|stable|unstable]" >&2
+            exit 2
+            ;;
+        esac
 
-      sudo nixos-rebuild switch --flake path:/etc/nixos#wsl
-    )
-  }
+        sudo nixos-rebuild switch --flake path:/etc/nixos#wsl
+      )
+    }
   '';
 
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.nixos = import ./home.nix;
+    extraSpecialArgs = { inherit inputs username; };
+    users.${username} = import ./home.nix;
   };
 
   # This value determines the NixOS release from which the default

@@ -14,6 +14,11 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    yazi-flavors = {
+      url = "github:yazi-rs/flavors";
+      flake = false;
+    };
   };
 
   outputs =
@@ -26,6 +31,7 @@
     }:
     let
       system = "x86_64-linux";
+      username = "nixos";
 
       unstableOverlay = final: _prev: {
         unstable = import nixpkgs-unstable {
@@ -38,11 +44,12 @@
       };
     in
     {
+      formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-tree;
       nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
         inherit system;
 
         specialArgs = {
-          inherit inputs;
+          inherit inputs username;
         };
 
         modules = [
