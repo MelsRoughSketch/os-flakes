@@ -19,6 +19,11 @@
       url = "github:yazi-rs/flavors";
       flake = false;
     };
+
+    eza-themes = {
+      url = "github:eza-community/eza-themes";
+      flake = false;
+    };
   };
 
   outputs =

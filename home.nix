@@ -8,7 +8,6 @@
     fd
     jq
     bat
-    eza
     treemd
     glow
     uv
@@ -39,7 +38,8 @@
     '';
 
     shellAliases = {
-      l = "eza --icons -F -l";
+      l = "eza --icons -F -lhg --git --group-directories-first";
+      tree = "eza --icons -F -T --group-directories-first";
       lg = "lazygit";
       gl = "glow -p";
       cw = "gwq cd";
@@ -63,6 +63,7 @@
   };
 
   imports = [
+    ./programs/eza.nix
     ./programs/git.nix
     ./programs/helix.nix
     ./programs/lazygit.nix

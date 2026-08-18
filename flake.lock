@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "eza-themes": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784485423,
+        "narHash": "sha256-53J0plgB+d6b4LzSwrCezmIhfVm7WZrKMA1ORGdUtQU=",
+        "owner": "eza-community",
+        "repo": "eza-themes",
+        "rev": "21184b55bfe34e8473c8160f9de0c03e4f76857f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "eza-community",
+        "repo": "eza-themes",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -93,6 +109,7 @@
     },
     "root": {
       "inputs": {
+        "eza-themes": "eza-themes",
         "home-manager": "home-manager",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",

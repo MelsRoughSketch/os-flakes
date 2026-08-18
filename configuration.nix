@@ -18,6 +18,13 @@
     auto-optimise-store = true;
   };
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    persistent = true;
+    options = "--delete-older-than 30d";
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   users.users.${username} = {
